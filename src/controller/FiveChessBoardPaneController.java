@@ -3,7 +3,7 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
-import utils.ChesspieceType;
+import utils.ChessPieceType;
 import utils.Position;
 
 
@@ -30,7 +30,7 @@ public class FiveChessBoardPaneController {
      * @param p 需要绘制的棋子坐标
      * @param type 需要绘制的棋子的类型
      */
-    public void drawChesspiece(Position p, ChesspieceType type){
+    public void drawChesspiece(Position p, ChessPieceType type){
 
     }
 
