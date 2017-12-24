@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+          fx:controller="controller.FiveChessBoardUIController"
+          alignment="CENTER" >
+
+    <Canvas fx:id="chessboard"   width="660"  height="660" onMouseClicked="#handleChessboardClicked" GridPane.hgrow="ALWAYS" GridPane.rowSpan="5" />
+    <children>
+        <TextArea fx:id="logMessage" styleClass="logContent" prefWidth="200" prefHeight="600" maxHeight="600" GridPane.columnIndex="1" editable="false" scrollLeft="2.0" scrollTop="2.0" wrapText="true" GridPane.columnSpan="1"  GridPane.rowIndex="0"></TextArea>
+        <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="6">
+
+            <Button fx:id="btnRestart" styleClass="btnRestart" prefWidth="120" prefHeight="20"  text="新游戏" onMouseClicked="#handleBtnRestartClicked" ></Button>
+            <Button fx:id="btnBack" styleClass="btnBack" prefWidth="120" prefHeight="20"  text="悔棋" onMouseClicked="#handleBtnBackClicked" ></Button>
+        </VBox>
+    </children>
+    <stylesheets>
+        <URL value="@ChessBoardPane.css" />
+    </stylesheets>
+</GridPane>

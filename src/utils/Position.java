@@ -18,6 +18,15 @@ public class Position {
         this.x = x;
         this.y = y;
     }
+    public int toInt(){
+        return this.x * 100 + this.y;
+    }
+
+    public static Position getPostion(int m){
+        int x = m / 100;
+        int y = m % 100;
+        return new Position(x, y);
+    }
 
     public int getX() {
         return x;

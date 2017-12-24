@@ -38,7 +38,7 @@ class FiveGameSession implements Runnable{
 
             while (true){
                 // 获得玩家一的输入，假设是玩家一先开始的
-                Position p  = getMoveInput(player1Input.readInt());
+                Position p  = Position.getPostion(player1Input.readInt());
                 // 这个p应该不用检测是否会出错吧
                 gameLogic.play(p);
                 if (isGameEnd()){
@@ -47,7 +47,7 @@ class FiveGameSession implements Runnable{
                 // 客户端2同步写入
                 sendMove(player2Output, p);
 
-                p = getMoveInput(player2Input.readInt());
+                p = Position.getPostion(player2Input.readInt());
                 gameLogic.play(p);
                 if (isGameEnd()){
                     break;
@@ -58,11 +58,7 @@ class FiveGameSession implements Runnable{
             ioe.printStackTrace();
         }
     }
-    private Position getMoveInput(int i){
-        int x = i / 100;
-        int y = i % 100;
-        return new Position(x, y);
-    }
+   
     private boolean isGameEnd(){
         switch (gameLogic.getGameStatus()){
             case PLAYER1_WIN:

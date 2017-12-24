@@ -17,16 +17,10 @@ public class TestClient {
 
             DataOutputStream output1 = new DataOutputStream(client1.getOutputStream());
             DataOutputStream output2 = new DataOutputStream(client2.getOutputStream());
-            output1.writeInt(101);
-            output2.writeInt(102);
-            output1.writeInt(201);
-            output2.writeInt(202);
-            output1.writeInt(301);
-            output2.writeInt(302);
-            output1.writeInt(401);
-            output2.writeInt(402);
-            output1.writeInt(501);
-            output2.writeInt(502);
+            while(true) {
+                output1.writeInt(101);
+                output2.writeInt(201);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

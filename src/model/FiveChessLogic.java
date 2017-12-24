@@ -1,5 +1,6 @@
 package model;
 
+import javafx.geometry.Pos;
 import utils.ChessPiece;
 import utils.ChessPieceType;
 import utils.GameStatus;
@@ -17,7 +18,7 @@ public class FiveChessLogic {
     /**
      * 棋盘大小
      */
-    private int chessboardSize = 19;
+    private int chessboardSize = 20;
     /**
      * 五子棋棋盘映射数组
      */
@@ -26,7 +27,8 @@ public class FiveChessLogic {
      * 历史记录队列
      */
     private Stack<ChessPiece> history = new Stack<>();
-    private GameStatus gameStatus = GameStatus.CONTINUE;
+
+    private GameStatus gameStatus = GameStatus.BLACK_TURN;
 
     public GameStatus getGameStatus() {
         return gameStatus;
@@ -37,36 +39,36 @@ public class FiveChessLogic {
      * @param p 坐标
      * @return 是否可以下棋
      */
-    public boolean play(Position p){
-        if (!isChessboardEmpty(p))
-            return false;
+    public void play(Position p){
         // 落子
+
         ChessPiece chessPiece = new ChessPiece(null, p);
         switch (gameStatus){
             case BLACK_TURN:
-                chessPiece = new ChessPiece(ChessPieceType.BLACK, p);
+                chessPiece.setType(ChessPieceType.BLACK);
+                setChessPiece(p, ChessPieceType.BLACK);
                 break;
             case WHITE_TURN:
-                chessPiece = new ChessPiece(ChessPieceType.WHITE, p);
+                chessPiece.setType(ChessPieceType.WHITE);
+                setChessPiece(p, ChessPieceType.WHITE);
                 break;
-            default:break;
         }
         // 记录信息
         history.push(chessPiece);
         check(p);
-        return true;
+        swithcPlayer();
     }
     /**
      * 悔棋
      */
-    private void undo(){
-        ChessPiece temp = history.peek();
-        if (temp != null){
-            Position p = temp.getPosition();
-            setChessPiece(p, null);
+    public Position undo(){
+        if (history.peek() != null){
             swithcPlayer();
-            // 发送悔棋的坐标
+            Position last = history.pop().getPosition();
+            setChessPiece(last, null);
+            return last;
         }
+        return null;
     }
 
     /**
@@ -84,9 +86,19 @@ public class FiveChessLogic {
      * @param p 位置
      * @return 是否为空
      */
-    private boolean isChessboardEmpty(Position p){
+    public boolean isChessboardEmpty(Position p){
         if(chessboardMap[p.getX()][p.getY()] == null){
             return true;
+        }
+        return false;
+    }
+
+    public boolean isGameOver(){
+        switch (gameStatus){
+            case PLAYER1_WIN:
+            case PLAYER2_WIN:
+            case DRAW:
+                return true;
         }
         return false;
     }
@@ -101,12 +113,10 @@ public class FiveChessLogic {
             case WHITE_TURN:
                 this.gameStatus = GameStatus.BLACK_TURN;
                 break;
-            default:
-                return;
         }
     }
 
-    private boolean check(Position p){
+    private void check(Position p){
         int top, left, topLeft, topRight;
         top = count(p, 0, 1) + count(p, 0, -1);
         left = count(p, 1, 0) + count(p , -1, 0);
@@ -114,14 +124,16 @@ public class FiveChessLogic {
         topRight = count(p , 1, 1) + count(p, -1, -1);
         if(top == 4 || left == 4 || topLeft == 4 || topRight == 4){
             switch (gameStatus){
-                case BLACK_TURN: gameStatus = GameStatus.PLAYER1_WIN;
+                case BLACK_TURN:
+                    gameStatus = GameStatus.PLAYER1_WIN;
+                    System.out.println("玩家一获胜");
                     break;
-                case WHITE_TURN: gameStatus = GameStatus.PLAYER2_WIN;
+                case WHITE_TURN:
+                    gameStatus = GameStatus.PLAYER2_WIN;
+                    System.out.println("玩家二获胜");
                     break;
             }
-            return true;
         }
-        return false;
     }
 
 
